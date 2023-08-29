@@ -17,7 +17,7 @@ import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.utils import set_seed
-from diffusers import AutoencoderKL, DDPMScheduler, DDIMScheduler
+from diffusers import AutoencoderKL, DPMSolverMultistepScheduler
 from diffusers.optimization import get_scheduler
 from diffusers.utils import check_min_version
 from diffusers.utils.import_utils import is_xformers_available
@@ -111,7 +111,7 @@ def main(
         OmegaConf.save(config, os.path.join(output_dir, 'config.yaml'))
 
     # Load scheduler, tokenizer and models.
-    noise_scheduler = DDPMScheduler.from_pretrained(pretrained_model_path, subfolder="scheduler")
+    noise_scheduler = DPMSolverMultistepScheduler.from_pretrained(pretrained_model_path, subfolder="scheduler")
     tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
     text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder")
     vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder="vae")
@@ -201,10 +201,10 @@ def main(
     # Get the validation pipeline
     validation_pipeline = AnimationPipeline(
         vae=vae, text_encoder=text_encoder, tokenizer=tokenizer, unet=unet,
-        scheduler=DDIMScheduler(**OmegaConf.to_container(inference_config.noise_scheduler_kwargs['DDIMScheduler'])),
+        scheduler= DPMSolverMultistepScheduler(**OmegaConf.to_container(inference_config.noise_scheduler_kwargs['DPMSolverMultistepScheduler'])),
     )
     validation_pipeline.enable_vae_slicing()
-    ddim_inv_scheduler = DDIMScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
+    ddim_inv_scheduler = DPMSolverMultistepScheduler.from_pretrained(pretrained_model_path, subfolder='scheduler')
     ddim_inv_scheduler.set_timesteps(validation_data.num_inv_steps)
 
     # Scheduler

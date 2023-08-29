@@ -7,7 +7,7 @@ from omegaconf import OmegaConf
 import torch
 
 import diffusers
-from diffusers import AutoencoderKL, DDIMScheduler
+from diffusers import AutoencoderKL, DPMSolverMultistepScheduler
 
 from tqdm.auto import tqdm
 from transformers import CLIPTextModel, CLIPTokenizer
@@ -62,7 +62,7 @@ def main(args):
 
             pipeline = AnimationPipeline(
                 vae=vae, text_encoder=text_encoder, tokenizer=tokenizer, unet=unet,
-                scheduler=DDIMScheduler(**OmegaConf.to_container(inference_config.noise_scheduler_kwargs['DDIMScheduler'])),
+                scheduler=DPMSolverMultistepScheduler(**OmegaConf.to_container(inference_config.noise_scheduler_kwargs['DPMSolverMultistepScheduler'])),
                 scan_inversions=not args.disable_inversions,
             ).to("cuda")
 

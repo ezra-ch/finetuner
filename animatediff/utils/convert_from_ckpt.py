@@ -37,7 +37,7 @@ from diffusers.models import (
     UNet2DConditionModel,
 )
 from diffusers.schedulers import (
-    DDIMScheduler,
+    DPMSolverMultistepScheduler,
     DDPMScheduler,
     DPMSolverMultistepScheduler,
     EulerAncestralDiscreteScheduler,
@@ -306,11 +306,12 @@ def create_vae_diffusers_config(original_config, image_size: int):
 
 
 def create_diffusers_schedular(original_config):
-    schedular = DDIMScheduler(
+    schedular = DPMSolverMultistepScheduler(
         num_train_timesteps=original_config.model.params.timesteps,
         beta_start=original_config.model.params.linear_start,
         beta_end=original_config.model.params.linear_end,
         beta_schedule="scaled_linear",
+        use_karras_sigmas=True,
     )
     return schedular
 
@@ -918,7 +919,7 @@ def stable_unclip_image_noising_components(
         beta_schedule = noise_aug_config.noise_schedule_config.beta_schedule
 
         image_normalizer = StableUnCLIPImageNormalizer(embedding_dim=embedding_dim)
-        image_noising_scheduler = DDPMScheduler(num_train_timesteps=max_noise_level, beta_schedule=beta_schedule)
+        image_noising_scheduler = DPMSolverMultistepScheduler(num_train_timesteps=max_noise_level, beta_schedule=beta_schedule, use_karras_sigmas=True)
 
         if "clip_stats_path" in noise_aug_config:
             if clip_stats_path is None:
