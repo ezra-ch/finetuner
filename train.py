@@ -376,8 +376,8 @@ def main(
                         save_path = f"{output_dir}/samples/sample-{global_step}.gif"
                         save_videos_grid(samples, save_path)
                         logger.info(f"Saved samples to {save_path}")
-
-            logs = {"step_loss": loss.detach().item(), "lr": lr_scheduler.get_last_lr()[0]}
+            lr_value = lr_scheduler.get_last_lr()[0]
+            logs = {"step_loss": loss.detach().item(), "lr": "{:.6f}".format(lr_value)}
             progress_bar.set_postfix(**logs)
 
             if global_step >= max_train_steps:
