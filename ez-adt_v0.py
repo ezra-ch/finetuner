@@ -155,7 +155,7 @@ def save_yaml():
 
 
         try:
-            yaml_content['learning_rate'] = str(learning_rate_entry.get())
+            yaml_content['learning_rate'] = float(learning_rate_entry.get())
             yaml_content['checkpointing_steps'] = int(checkpointing_steps_entry.get())
             yaml_content['max_train_steps'] = int(max_train_steps_entry.get())
             yaml_content['validation_steps'] = int(validation_steps_entry.get())
