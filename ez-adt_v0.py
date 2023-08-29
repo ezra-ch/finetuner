@@ -374,7 +374,7 @@ learning_rate_label = Label(training_steps_frame, text="Learning Rate:")
 learning_rate_label.grid(row=0, column=0, sticky='w')
 learning_rate_entry = Entry(training_steps_frame)
 learning_rate_entry.grid(row=0, column=1)
-learning_rate_entry.insert(0, yaml_content.get('learning_rate', '3.0e-05'))
+learning_rate_entry.insert(0, yaml_content.get('learning_rate', 3.0e-05))
 
 #Checkpoint steps
 checkpointing_steps_label = Label(training_steps_frame, text="Checkpoint Steps:")
