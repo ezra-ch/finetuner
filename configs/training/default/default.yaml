@@ -15,24 +15,24 @@ validation_data:
   video_length: 16
   width: 512
   height: 512
-  num_inference_steps: 20
+  num_inference_steps: 25
   temporal_context: 64
-  guidance_scale: 12.5
+  guidance_scale: 8
   use_inv_latent: true
-  num_inv_steps: 50
+  num_inv_steps: 40
 validation_steps: 10000
 train_whole_module: false
 trainable_modules:
 - to_q
 train_batch_size: 1
 max_train_steps: 1000
-learning_rate: 3.0e-05
+learning_rate: 0.0045
 scale_lr: false
-lr_scheduler: constant
-lr_warmup_steps: 0
+lr_scheduler: cosine
+lr_warmup_steps: 10
 adam_beta1: 0.9
 adam_beta2: 0.999
-adam_weight_decay: 0.01
+adam_weight_decay: 0.08
 adam_epsilon: 1.0e-08
 max_grad_norm: 1.0
 gradient_accumulation_steps: 1
